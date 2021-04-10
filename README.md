@@ -1,4 +1,3 @@
-# aptool-python
 aptool 是用来提取及预测aptamer数据的软件
 使用python开发，无需额外安装其他包。
 用于fastq文件
