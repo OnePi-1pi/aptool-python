@@ -41,21 +41,20 @@ def main ():
         sys.exit()
     #没有primer文件则抛出错误。
     #print(fqpaths)
-    #print(primerfile)
+    print(primerfile)
     pnum=0
     primernames=[]
     primers=[]
     oppoprimers=[]
     array0pnum=[0]
-    global results
     results={}
-    global resultd
     resultd={}
     stop1=time()
     print("第一阶段用时%s秒"%str(stop1-start))
     with open(primerfile, 'r', encoding='UTF-8') as primerf:
         for pr in primerf:
-                    
+                #print(pr)
+                if pr != "\n" and pr != "\r\n":
                     if pnum==0:
                         numn=int(pr.split(',')[0])
                         rightprimer=((pr.split(',')[1]).replace("\r","").replace("\n","").replace(" ",""))
@@ -73,6 +72,8 @@ def main ():
                         results[dicl1].append(pname)
                         array0pnum.append(0)
                     pnum+=1
+                else:
+                    print("发现空行1个")
     resultd=(copy.deepcopy(results))
     #print("primers=%s"%primers)
     numsing=numn+len(rightprimer)
@@ -139,35 +140,24 @@ def main ():
     ####输出序列总数
     filesingle=open(pathin+filename+"单端.csv","w+",newline='\n')
     for i in results:
-        if i!=dicl1 and results[i][0] >= 0:
+        if i!=dicl1 and results[i][0] >= 10:
             #单端筛选器的个数限制在此处更改
             filesingle.write(str(i)+",")
             for j in results[i]:
                     filesingle.write(str(j)+",")
                     
             filesingle.write('\n')
-        else:
-            filesingle.write(str(i)+",")
-            for j in results[i]:
-                    filesingle.write(str(j)+",")
-                    
-            filesingle.write('\n')
+     
     filesingle.close()
     #单端数据带筛选器
     filedouble=open(pathin+filename+"双端.csv","w+",newline='\n')
     for i in resultd:
 
-        if  i!=dicl1 and resultd[i][0] >=0:
+        if  i!=dicl1 and resultd[i][0] >=10:
             #双端筛选器的个数限制在此处更改
             filedouble.write(str(i)+",")
             for j in resultd[i]:
                     filedouble.write(str(j)+",") 
-            filedouble.write('\n')
-        else:
-            filedouble.write(str(i)+",")
-            for j in results[i]:
-                    filedouble.write(str(j)+",")
-                    
             filedouble.write('\n')
     filedouble.close()
     stop4=time()
